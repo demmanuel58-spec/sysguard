@@ -31,19 +31,24 @@ Production servers frequently crash due to unmonitored disk space exhaustion, me
 ## 🏗️ Architecture & Directory Layout
 
 ```
-sysguard/
-├── bin/
-│   └── sysguard              # Main CLI entrypoint executable
-├── lib/
-│   ├── utils.sh              # Shared functions: logging, color output, lockfiles
-│   └── alerter.sh            # JSON payload builder & webhook HTTP dispatcher
-├── config/
-│   └── sysguard.conf         # Centralized system thresholds & settings
-├── systemd/
-│   ├── sysguard.service      # Systemd background service unit
-│   └── sysguard.timer        # Systemd timer unit schedule
-├── install.sh                # Automated installer & systemd setup script
-└── README.md                 # System documentation
+┌────────────────────────┐
+│  Host Metrics Engine   │ (top, df, free, ps)
+└───────────┬────────────┘
+            │
+            ▼
+┌────────────────────────┐
+│  Threshold Inspector   │ (CPU_CRITICAL, MEM_CRITICAL, DISK_CRITICAL)
+└───────────┬────────────┘
+            │
+            ▼
+┌────────────────────────┐
+│   Process Sampler      │ (Captures Top-5 PID Tree on breach)
+└───────────┬────────────┘
+            │
+            ▼
+┌────────────────────────┐
+│  JSON Webhook Engine   │ ──► [ Slack / Discord / Telegram ]
+└────────────────────────┘
 
 ```
 
@@ -61,20 +66,26 @@ sysguard/
 
 ## 🚀 Quickstart & Installation
 
-**1. Clone & Run Automated Setup**
+**Option 1: One-Line Remote Installer (Recommended)**
 ```
-git clone [https://github.com/YOUR_USERNAME/sysguard.git](https://github.com/demmanuel58-spec/sysguard.git)
+Install directly in a headless Linux environment:
+curl -sSL [https://raw.githubusercontent.com/demmanuel58-spec/sysguard/main/install.sh]| sudo bash
+```
+
+**Option 2: Manual Clone & Setup**
+You can run a diagnostic sweep directly from your terminal:
+```
+git clone [https://github.com/demmanuel58-spec/sysguard.git]
 cd sysguard
 chmod +x install.sh
 sudo ./install.sh
 ```
 
-**2. Manual CLI Execution**
-You can run a diagnostic sweep directly from your terminal:
+**Execution**
+Run a diagnostic sweep directly from your terminal:
 ```
 sysguard --check
 ```
-
 
 ## ⚙️ Configuration (config/sysguard.conf)
 Adjust resource limits and alerts in config/sysguard.conf:
