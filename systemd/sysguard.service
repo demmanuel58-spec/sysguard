@@ -1,0 +1,7 @@
+[Unit]
+Description=SysGuard Health & Incident Alerting Engine
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/sysguard --check
