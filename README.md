@@ -119,13 +119,16 @@ Top Process Consumers:
 ```
 
 
+## 👤 Author
+
+**David Emmanuel Munyaka**  
+Backend Software Engineer specializing in distributed systems, REST APIs, and database architecture.
+
+* **GitHub:** [@demmanuel58-spec](https://github.com/demmanuel58-spec)
+* **LinkedIn:** [David Emmanuel](https://linkedin.com)
+
+
+
 ## ⚠️ Disclaimer
 
 SysGuard is provided "as is", without warranty of any kind, express or implied. It is designed for monitoring and diagnostic purposes. Always test configurations, threshold triggers, and webhook endpoints in a staging or non-production environment before deploying to critical infrastructure.
-
-
-
-##  👤 Author
-**David Emmanuel Munyaka**
-* Backend Software Engineer
-* GitHub: https://github.com/dammanuel58-spec
