@@ -104,6 +104,7 @@ Top Process Consumers:
   PID  PPID COMMAND                  %CPU  %MEM
  1420  1012 /usr/bin/node server.js   88.4   6.2
  1102     1 /usr/bin/postgres         4.1   12.1
+
 ```
 
 
@@ -113,8 +114,7 @@ SysGuard is provided "as is", without warranty of any kind, express or implied. 
 
 
 
-
-👤 Author
-David Emmanuel Munyaka
+##  👤 Author
+**David Emmanuel Munyaka**
 * Backend Software Engineer
 * GitHub: https://github.com/dammanuel58-spec
