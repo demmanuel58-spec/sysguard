@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+source "${SCRIPT_DIR}/config/sysguard.conf"
+source "${SCRIPT_DIR}/lib/utils.sh"
+source "${SCRIPT_DIR}/lib/alerter.sh"
+
+acquire_lock
+
+usage() {
+    cat <<EOF
+SysGuard - Server Health & Incident Alert Engine
+
+Usage:
+  sysguard [options]
+
+Options:
+  -c, --check       Execute a full system metrics inspection sweep.
+  -v, --version     Display installed SysGuard version.
+  -h, --help        Show this help documentation.
+
+EOF
+    exit 0
+}
+
+run_checks() {
+    log "INFO" "Starting diagnostic scan on $(hostname)..."
+
+    local cpu_idle
+    cpu_idle=$(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print int($1)}')
+    local cpu_usage=$((100 - cpu_idle))
+
+    if [[ ${cpu_usage} -ge${CPU_CRITICAL_THRESHOLD} ]]; then
+        local top_cpu
+        top_cpu=$(ps -eo pid,ppid,cmd,\%cpu,\%mem --sort=-\%cpu \vert{} head -n "$((TOP_PROCESS_COUNT + 1))")
+        send_alert "CRITICAL" "CPU Load" "${cpu_usage}" "${top_cpu}"
+    fi
+
+    local disk_usage
+    disk_usage=$(df / | awk 'NR==2 {print $5}' | sed 's/%//')
+    if [[ ${disk_usage} -ge${DISK_CRITICAL_THRESHOLD} ]]; then
+        local disk_info
+        disk_info=$(df -h /)
+        send_alert "CRITICAL" "Root Partition Storage" "${disk_usage}" "${disk_info}"
+    fi
+
+    log "SUCCESS" "Diagnostic scan finalized."
+}
+
+case "${1:- --check}" in
+    -c|--check)   run_checks ;;
+    -v|--version) echo "SysGuard v1.2.0" ;;
+    -h|--help)    usage ;;
+    *)            log "ERROR" "Unknown option: $1"; usage ;;
+esac
