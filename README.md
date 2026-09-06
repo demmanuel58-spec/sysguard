@@ -8,7 +8,7 @@ A modular, POSIX-compliant system monitoring utility built in Bash. SysGuard act
 ![Systemd](https://img.shields.io/badge/Service-Systemd%20Timer-4D4D4D?style=for-the-badge&logo=systemd&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
 
----
+
 
 ## 🎯 Target Audience & Operational Value
 
@@ -19,14 +19,14 @@ SysGuard was engineered specifically for **DevOps Engineers, SREs, Systems Admin
 * **Actionable Root-Cause Alerts:** Traditional alerts only tell you *"CPU is at 95%."* SysGuard captures a live snapshot of the top-5 resource-consuming PIDs and attaches the exact process tree to your Slack or Discord webhook payload.
 * **Systemd-Native Automation:** Installs as a background Linux daemon using native `systemd` service and timer units for headless, 24/7 server protection.
 
----
+
 
 ## 🎯 Problem Solved
 Production servers frequently crash due to unmonitored disk space exhaustion, memory leaks, or runaway background processes. Setting up massive enterprise agents (like Datadog or New Relic) is often cost-prohibitive or overkill for targeted API nodes and VPS deployments.
 
 **SysGuard** provides an automated, lightweight, zero-dependency alternative that inspects system internals natively, isolates process bottlenecks, and alerts on-call teams before outages impact end users.
 
----
+
 
 ## 🏗️ Architecture & Directory Layout
 
@@ -46,7 +46,6 @@ sysguard/
 └── README.md                 # System documentation
 
 ```
----
 
 ## 💡 Key Technical Features
 
@@ -58,7 +57,7 @@ sysguard/
 
 * **Defensive Error Handling:**  Enforces set -euo pipefail and custom error traps to ensure immediate, predictable failure if pipes break or variables are unbound.
 
----
+
 
 ## 🚀 Quickstart & Installation
 
@@ -76,7 +75,6 @@ You can run a diagnostic sweep directly from your terminal:
 sysguard --check
 ```
 
----
 
 ## ⚙️ Configuration (config/sysguard.conf)
 Adjust resource limits and alerts in config/sysguard.conf:
@@ -93,7 +91,7 @@ WEBHOOK_URL="[https://hooks.slack.com/services/YOUR/WEBHOOK/URL](https://hooks.s
 # Logging Options
 LOG_FILE="/var/log/sysguard.log"
 ```
----
+
 
 ##  📊 Sample Alert Output
 When a threshold is breached, SysGuard dispatches a formatted payload to your configured webhook:
@@ -107,7 +105,14 @@ Top Process Consumers:
  1420  1012 /usr/bin/node server.js   88.4   6.2
  1102     1 /usr/bin/postgres         4.1   12.1
 ```
----
+
+
+## ⚠️ Disclaimer
+
+SysGuard is provided "as is", without warranty of any kind, express or implied. It is designed for monitoring and diagnostic purposes. Always test configurations, threshold triggers, and webhook endpoints in a staging or non-production environment before deploying to critical infrastructure.
+
+
+
 
 👤 Author
 David Emmanuel Munyaka
